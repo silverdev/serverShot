@@ -31,14 +31,17 @@ def read_faces(csv_url):
 
 
 class FaceRecognizer(object):
-    def __init__(self, csv_url="faces.csv"):
+    def __init__(self, mode=0, csv_url="faces.csv"):
         self.faces, self.names, self.samples = read_faces(csv_url)
         self.face_y, self.face_x = self.faces[0].shape
         self.face_size = self.faces[0].shape
         print self.faces[0].shape
-        self.model = cv2.createEigenFaceRecognizer(num_components=80)
-        #self.model =cv2.createLBPHFaceRecognizer(neighbors=32,grid_x=16, grid_y=16)
-        #self.model =cv2.createFisherFaceRecognizer(num_components=80)
+        if mode == 0:
+            self.model = cv2.createEigenFaceRecognizer(num_components=80)
+        if mode == 1:
+            self.model =cv2.createLBPHFaceRecognizer(neighbors=32,grid_x=16, grid_y=16)
+        if mode == 2:
+            self.model =cv2.createFisherFaceRecognizer(num_components=80)
         self.model.train(self.faces, np.array(range(len(self.names))))
 
     def detect_face(self, image):

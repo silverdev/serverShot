@@ -7,13 +7,16 @@ from detectface import FaceRecognizer
 print sys.argv[0]
 
 cascPath = sys.argv[1]
-url = sys.argv[2]
+classifyer_type = sys.argv.get(2)
+url = sys.argv.get(3)
 
 faceCascade = cv2.CascadeClassifier(cascPath)
 
 video_capture = cv2.VideoCapture(url)
-
-faceRecognizer = FaceRecognizer()
+if classifyer_type is not None:
+    faceRecognizer = FaceRecognizer(classifyer_type)
+else:
+    faceRecognizer = FaceRecognizer()
 
 while True:
     # Capture frame-by-frame
