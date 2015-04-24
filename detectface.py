@@ -71,7 +71,7 @@ class FaceRecognizer(object):
         if mode == 0:
             self.model = cv2.createEigenFaceRecognizer(num_components=80)
         elif mode == 1:
-            self.model =cv2.createLBPHFaceRecognizer(neighbors=32,grid_x=16, grid_y=16)
+            self.model =cv2.createLBPHFaceRecognizer(neighbors=8,grid_x=8, grid_y=8)
         elif mode == 2:
             self.model =cv2.createFisherFaceRecognizer(num_components=80)
         else:
