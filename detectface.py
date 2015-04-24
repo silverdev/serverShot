@@ -3,6 +3,7 @@ from cv2 import cv
 import csv
 import numpy as np
 import time
+import os
 
 class ConsistentFace(object):
 
@@ -91,9 +92,19 @@ class FaceRecognizer(object):
 
 def timeShow(img):
     cv2.imshow('pic', img)
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord('q'):
         exit()
+    elif key == ord('s'):
+        print "saving face"
+        name = "{}.png".format(time.strftime("%Y-%m-%d-%H.%M.%S"))
+        folder = "newSamples"
+        try:
+            os.mkdir(folder)
+        except OSError:
+            pass
+        cv2.imwrite(os.path.join(folder, name), img,
+                    (cv2.IMWRITE_PNG_COMPRESSION, 100))
 
     for x in range(1000):
         pass
