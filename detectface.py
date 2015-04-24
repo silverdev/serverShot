@@ -4,11 +4,42 @@ import csv
 import numpy as np
 import time
 
-class Face(object):
+class ConsistentFace(object):
 
-    def __init__(self, image, label=None):
-        self.image = image
-        self.label = label
+    def __init__(self, x, y, w, h, name, confidence, id, face_image):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.id = id
+        self.name = name
+        self.confidence = confidence
+        self.image = face_image
+        self.timetolive = 10
+        self.matchingerror = 40
+        self.ttl = self.timetolive
+
+    def stillalive(self):
+        self.ttl -= 1
+        return self.ttl > 0
+
+    def match(self, x, y, w, h):
+        if abs(x - self.x) + abs(y - self.y) < self.matchingerror:
+            return True
+        return False
+
+    def update(self, x, y, w, h, name, confidence, face_image):
+        if confidence < self.confidence:
+            self.name = name
+            self.confidence = confidence
+            self.image = face_image
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.ttl = self.timetolive
+
+
 
 
 def read_faces(csv_url):
@@ -35,6 +66,7 @@ class FaceRecognizer(object):
         self.faces, self.names, self.samples = read_faces(csv_url)
         self.face_y, self.face_x = self.faces[0].shape
         self.face_size = self.faces[0].shape
+
         print self.faces[0].shape
         if mode == 0:
             self.model = cv2.createEigenFaceRecognizer(num_components=80)
@@ -51,8 +83,8 @@ class FaceRecognizer(object):
         timeShow(image)
         index, confidence = self.model.predict(image)
         label = self.names[index]
-        print index, label, confidence, self.samples[index]
-        return label, True if confidence < 100 else False
+        #print index, label, confidence, self.samples[index]
+        return label, confidence
 
 
 def timeShow(img):
