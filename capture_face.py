@@ -30,7 +30,7 @@ faceRecognizer = FaceRecognizer(classifer_type)
 
 consistentFaces = []
 
-confidenceThreshold = 1000
+confidenceThreshold = 100
 
 id = 0
 while True:
