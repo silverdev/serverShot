@@ -17,20 +17,22 @@ def read_faces(csv_url):
         face_urls = list(doc)
     faces = list()
     names = list()
-
-    for face_url, name in face_urls:
+    samples = list()
+    print face_urls[0]
+    for face_url, name, sample in face_urls:
         face = cv2.imread(face_url)
         face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
         faces.append(face)
         names.append(name)
+        samples.append(sample)
         timeShow(face)
         print name
-    return faces, names
+    return faces, names, samples
 
 
 class FaceRecognizer(object):
     def __init__(self, csv_url="faces.csv"):
-        self.faces, self.names = read_faces(csv_url)
+        self.faces, self.names, self.samples = read_faces(csv_url)
         self.face_y, self.face_x = self.faces[0].shape
         self.face_size = self.faces[0].shape
         print self.faces[0].shape
@@ -46,7 +48,7 @@ class FaceRecognizer(object):
         timeShow(image)
         index, confidence = self.model.predict(image)
         label = self.names[index]
-        print index, label, confidence
+        print index, label, confidence, self.samples[index]
         return label, True if confidence < 100 else False
 
 

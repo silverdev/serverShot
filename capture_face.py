@@ -11,7 +11,7 @@ url = sys.argv[2]
 
 faceCascade = cv2.CascadeClassifier(cascPath)
 
-video_capture = cv2.VideoCapture(1)
+video_capture = cv2.VideoCapture(url)
 
 faceRecognizer = FaceRecognizer()
 
