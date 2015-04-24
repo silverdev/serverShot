@@ -18,7 +18,7 @@ faceRecognizer = FaceRecognizer()
 
 consistentFaces = []
 
-confidenceThreshold = 100
+confidenceThreshold = 1000
 
 id = 0
 while True:
@@ -66,11 +66,13 @@ while True:
             if confidence < confidenceThreshold:
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
                 cv2.putText(frame, str(myid), (x, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
-                cv2.putText(frame, '-face '+str(name), (x+20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
+                cv2.putText(frame, 'face '+str(name), (x+20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
+                cv2.putText(frame, '('+str(int(confidence))+')', (x+90, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
             else:
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0,  0, 255), 2)
                 cv2.putText(frame, str(myid), (x, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
-                cv2.putText(frame, '-face '+str(name), (x+20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
+                cv2.putText(frame, 'face '+str(name), (x+20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
+                cv2.putText(frame, '('+str(int(confidence))+')', (x+90, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
         for face in consistentFaces:
             print face.id
         for f in reversed(consistentFaces):
