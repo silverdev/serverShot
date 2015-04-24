@@ -7,18 +7,25 @@ from detectface import ConsistentFace
 
 print sys.argv[0]
 
+
+def list_get(l, idx):
+    try:
+        return l[idx]
+    except IndexError:
+        return None
+
 cascPath = sys.argv[1]
 
-classifyer_type = sys.argv.get(2)
-url = sys.argv.get(3)
+classifer_type = int(list_get(sys.argv, 2) or "1")
+url = list_get(sys.argv, 3) or 0
+
 
 faceCascade = cv2.CascadeClassifier(cascPath)
 
 video_capture = cv2.VideoCapture(url)
-if classifyer_type is not None:
-    faceRecognizer = FaceRecognizer(classifyer_type)
-else:
-    faceRecognizer = FaceRecognizer()
+
+faceRecognizer = FaceRecognizer(classifer_type)
+
 
 
 consistentFaces = []
