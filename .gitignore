@@ -54,3 +54,15 @@ docs/_build/
 
 # PyBuilder
 target/
+
+
+# project stuff
+
+\#faces.csv\#
+0318.jpg
+face.jpg
+face.png
+faces.csv
+file.pdf
+orl_faces/
+resize.py
