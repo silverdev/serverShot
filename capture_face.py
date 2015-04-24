@@ -53,7 +53,7 @@ while True:
             myid = id
             for consistentFace in consistentFaces:
                 if consistentFace.match(x, y, w, h):
-                    consistentFace.update(x, y, w, h, name, confidence)
+                    consistentFace.update(x, y, w, h, name, confidence, face_image)
                     name = consistentFace.name
                     confidence = consistentFace.confidence
                     new = False
@@ -61,7 +61,7 @@ while True:
                     break
             #print name, confidence
             if new:
-                consistentFaces.append(ConsistentFace(x, y, w, h, name, confidence, id))
+                consistentFaces.append(ConsistentFace(x, y, w, h, name, confidence, id, face_image))
                 id += 1
             if confidence < confidenceThreshold:
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)

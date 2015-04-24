@@ -6,7 +6,7 @@ import time
 
 class ConsistentFace(object):
 
-    def __init__(self, x, y, w, h, name, confidence, id):
+    def __init__(self, x, y, w, h, name, confidence, id, face_image):
         self.x = x
         self.y = y
         self.w = w
@@ -14,6 +14,7 @@ class ConsistentFace(object):
         self.id = id
         self.name = name
         self.confidence = confidence
+        self.image = face_image
         self.timetolive = 10
         self.matchingerror = 40
         self.ttl = self.timetolive
@@ -27,10 +28,11 @@ class ConsistentFace(object):
             return True
         return False
 
-    def update(self, x, y, w, h, name, confidence):
+    def update(self, x, y, w, h, name, confidence, face_image):
         if confidence < self.confidence:
             self.name = name
             self.confidence = confidence
+            self.image = face_image
         self.x = x
         self.y = y
         self.w = w
