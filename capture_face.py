@@ -27,7 +27,6 @@ video_capture = cv2.VideoCapture(url)
 faceRecognizer = FaceRecognizer(classifer_type)
 
 
-
 consistentFaces = []
 
 confidenceThreshold = 100
@@ -49,15 +48,14 @@ while True:
     )
     if len(faces) > 0:
 
-
         # Draw a rectangle around the faces
         for (x, y, w, h) in faces:
             ar = (w * 112) / 92 - h
             y -= ar / 2
             h += ar / 2
-            if y < 0 or y+h >= gray.shape[0]:
+            if y < 0 or y + h >= gray.shape[0]:
                 continue
-            face_image = gray[y:y+h, x:x+w]
+            face_image = gray[y:y + h, x:x + w]
             if face_image.size < 32:
                 continue
             name, confidence = faceRecognizer.detect_face(face_image)
@@ -65,24 +63,30 @@ while True:
             myid = id
             for consistentFace in consistentFaces:
                 if consistentFace.match(x, y, w, h):
-                    consistentFace.update(x, y, w, h, name, confidence, face_image)
+                    consistentFace.update(
+                        x, y, w, h, name, confidence, face_image)
                     name = consistentFace.name
                     confidence = consistentFace.confidence
                     new = False
                     myid = consistentFace.id
                     break
-            #print name, confidence
+            # print name, confidence
             if new:
-                consistentFaces.append(ConsistentFace(x, y, w, h, name, confidence, id, face_image))
+                consistentFaces.append(
+                    ConsistentFace(x, y, w, h, name, confidence, id, face_image))
                 id += 1
             if confidence < confidenceThreshold:
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-                cv2.putText(frame, str(myid), (x, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
-                cv2.putText(frame, 'face '+str(name) + ' ('+str(int(confidence))+')', (x+20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cv2.putText(
+                    frame, str(myid), (x, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0))
+                cv2.putText(frame, 'face ' + str(name) + ' (' + str(int(confidence)) + ')',
+                            (x + 20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0))
             else:
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (0,  0, 255), 2)
-                cv2.putText(frame, str(myid), (x, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
-                cv2.putText(frame, 'face '+str(name) + ' ('+str(int(confidence))+')', (x+20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0))
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                cv2.putText(
+                    frame, str(myid), (x, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0))
+                cv2.putText(frame, 'face ' + str(name) + ' (' + str(int(confidence)) + ')',
+                            (x + 20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0))
         for face in consistentFaces:
             print face.id
         for f in reversed(consistentFaces):
