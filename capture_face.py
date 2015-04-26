@@ -94,7 +94,8 @@ while True:
     # Display the resulting frame
     cv2.imshow('Video', frame)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    key = cv2.waitKey(100) & 0xFF
+    if key == ord('q'):
         break
 
 # When everything is done, release the capture

@@ -5,6 +5,7 @@ import numpy as np
 import time
 import os
 
+
 class ConsistentFace(object):
 
     def __init__(self, x, y, w, h, name, confidence, id, face_image):
@@ -41,8 +42,6 @@ class ConsistentFace(object):
         self.ttl = self.timetolive
 
 
-
-
 def read_faces(csv_url):
     with open("faces.csv", "rb") as f:
         doc = csv.reader(f, delimiter=';')
@@ -63,6 +62,7 @@ def read_faces(csv_url):
 
 
 class FaceRecognizer(object):
+
     def __init__(self, mode=0, csv_url="faces.csv"):
         self.faces, self.names, self.samples = read_faces(csv_url)
         self.face_y, self.face_x = self.faces[0].shape
@@ -72,9 +72,12 @@ class FaceRecognizer(object):
         if mode == 0:
             self.model = cv2.createEigenFaceRecognizer(num_components=80)
         elif mode == 1:
-            self.model =cv2.createLBPHFaceRecognizer(neighbors=8,grid_x=8, grid_y=8)
+            self.model = cv2.createLBPHFaceRecognizer(
+                neighbors=8,
+                grid_x=8,
+                grid_y=8)
         elif mode == 2:
-            self.model =cv2.createFisherFaceRecognizer(num_components=80)
+            self.model = cv2.createFisherFaceRecognizer(num_components=80)
         else:
             print mode
         self.model.train(self.faces, np.array(range(len(self.names))))
@@ -86,7 +89,7 @@ class FaceRecognizer(object):
         timeShow(image)
         index, confidence = self.model.predict(image)
         label = self.names[index]
-        #print index, label, confidence, self.samples[index]
+        # print index, label, confidence, self.samples[index]
         return label, confidence
 
 
@@ -108,4 +111,4 @@ def timeShow(img):
 
     for x in range(1000):
         pass
-    #time.sleep(4)
+    # time.sleep(4)
