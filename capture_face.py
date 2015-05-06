@@ -4,6 +4,20 @@ import sys
 from detectface import FaceRecognizer
 from detectface import ConsistentFace
 
+try:
+    import controlTurret
+except ImportError:
+    class controlTurret:
+
+        @staticmethod
+        def setup_usb():
+            pass
+
+        @staticmethod
+        def move_turret(x):
+            pass
+    print "Install PYUSB to control the turret"
+
 
 print sys.argv[0]
 
@@ -26,6 +40,10 @@ video_capture = cv2.VideoCapture(url)
 
 faceRecognizer = FaceRecognizer(classifer_type)
 
+try:
+    controlTurret.setup_usb()
+except ValueError:
+    print "Could not control turret"
 
 consistentFaces = []
 
@@ -99,6 +117,8 @@ while True:
     key = cv2.waitKey(100) & 0xFF
     if key == ord('q'):
         break
+    controlTurret.move_turret(chr(key))
+
 
 # When everything is done, release the capture
 video_capture.release()

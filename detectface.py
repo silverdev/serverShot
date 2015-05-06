@@ -57,7 +57,7 @@ def read_faces(csv_url):
         names.append(name)
         samples.append(sample)
         timeShow(face)
-        print name
+        #print name
     return faces, names, samples
 
 
@@ -95,7 +95,8 @@ class FaceRecognizer(object):
 
 def timeShow(img):
     cv2.imshow('pic', img)
-    key = cv2.waitKey(1) & 0xFF
+    # key = cv2.waitKey(1) & 0xFF
+    key = ""
     if key == ord('q'):
         exit()
     elif key == ord('s'):
