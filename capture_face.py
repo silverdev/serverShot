@@ -38,6 +38,8 @@ faceCascade = cv2.CascadeClassifier(cascPath)
 
 video_capture = cv2.VideoCapture(url)
 
+#video_file = cv2.VideoWriter("demo2.avi", cv2.cv.CV_FOURCC('X','V','I','D'), 24, (640, 480), True)
+
 faceRecognizer = FaceRecognizer(classifer_type)
 
 try:
@@ -112,7 +114,9 @@ while True:
                 consistentFaces.remove(f)
 
     # Display the resulting frame
+    #video_file.write(frame)
     cv2.imshow('Video', frame)
+
 
     key = cv2.waitKey(100) & 0xFF
     if key == ord('q'):
@@ -121,5 +125,6 @@ while True:
 
 
 # When everything is done, release the capture
+#video_file.release()
 video_capture.release()
 cv2.destroyAllWindows()
