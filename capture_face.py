@@ -38,7 +38,7 @@ faceCascade = cv2.CascadeClassifier(cascPath)
 
 video_capture = cv2.VideoCapture(url)
 
-#video_file = cv2.VideoWriter("demo2.avi", cv2.cv.CV_FOURCC('X','V','I','D'), 24, (640, 480), True)
+#video_file = cv2.VideoWriter("demo2.avi", cv2.cv.CV_FOURCC('X','V','I','D'), 24, (960, 540), True)
 
 faceRecognizer = FaceRecognizer(classifer_type)
 
@@ -81,6 +81,7 @@ while True:
             name, confidence = faceRecognizer.detect_face(face_image)
             new = True
             myid = id
+            visible = False
             for consistentFace in consistentFaces:
                 if consistentFace.match(x, y, w, h):
                     consistentFace.update(
@@ -89,26 +90,35 @@ while True:
                     confidence = consistentFace.confidence
                     new = False
                     myid = consistentFace.id
+                    visible = not consistentFace.invisible
                     break
             # print name, confidence
             if new:
                 consistentFaces.append(
                     ConsistentFace(x, y, w, h, name, confidence, id, face_image))
                 id += 1
-            if confidence < confidenceThreshold:
+            if not visible:
+                pass
+            elif confidence < confidenceThreshold and str(name) == 'modi':
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                cv2.putText(
+                    frame, str(myid), (x, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0))
+                cv2.putText(frame, 'face ' + str(name) + ' (' + str(int(confidence)) + ')',
+                            (x + 20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0))
+            elif confidence < confidenceThreshold:
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 cv2.putText(
                     frame, str(myid), (x, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0))
                 cv2.putText(frame, 'face ' + str(name) + ' (' + str(int(confidence)) + ')',
                             (x + 20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0))
             else:
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
                 cv2.putText(
                     frame, str(myid), (x, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0))
                 cv2.putText(frame, 'face ' + str(name) + ' (' + str(int(confidence)) + ')',
                             (x + 20, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 0, 0))
-        for face in consistentFaces:
-            print face.id
+        #for face in consistentFaces:
+        #    print face.id
         for f in reversed(consistentFaces):
             if not f.stillalive():
                 consistentFaces.remove(f)
@@ -118,10 +128,10 @@ while True:
     cv2.imshow('Video', frame)
 
 
-    key = cv2.waitKey(100) & 0xFF
-    if key == ord('q'):
-        break
-    controlTurret.move_turret(chr(key))
+    #key = cv2.waitKey(100) & 0xFF
+    #if key == ord('q'):
+    #    break
+    #controlTurret.move_turret(chr(key))
 
 
 # When everything is done, release the capture

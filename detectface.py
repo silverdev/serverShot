@@ -20,9 +20,15 @@ class ConsistentFace(object):
         self.timetolive = 10
         self.matchingerror = 40
         self.ttl = self.timetolive
+        self.invisible = True
+        self.invisbleframes = 5
 
     def stillalive(self):
         self.ttl -= 1
+        if self.invisible:
+            self.invisbleframes -= 1
+            if self.invisbleframes < 0:
+                self.invisible = False
         return self.ttl > 0
 
     def match(self, x, y, w, h):
@@ -40,6 +46,8 @@ class ConsistentFace(object):
         self.w = w
         self.h = h
         self.ttl = self.timetolive
+        if name != self.name and confidence < 80:
+            self.confidence += 2
 
 
 def read_faces(csv_url):
@@ -95,8 +103,8 @@ class FaceRecognizer(object):
 
 def timeShow(img):
     cv2.imshow('pic', img)
-    # key = cv2.waitKey(1) & 0xFF
-    key = ""
+    key = cv2.waitKey(1) & 0xFF
+    #key = ""
     if key == ord('q'):
         exit()
     elif key == ord('s'):
