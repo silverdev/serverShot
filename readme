@@ -1,0 +1,12 @@
+This project detects faces with the intent of being able to secure rooms from unauthorized accesses.
+
+Blue faces do not pass the confidence threshold, green faces are authorized, and red faces are unauthorized.
+
+To run, use 'make_csv.py face_folder > faces.csv'
+Once you have tha file, run './capture_face.py haarcascade_frontalface_default.xml 1'
+To add faces, hit 's' to save them to a temporary folder, then add them into your faces folder.
+There is a set of example faces in att_faces. Once you have added faces, rerun the make_csv script.
+
+Optionally, you can add an argument with the name of a video file to run the script off the video file.
+
+There is also code to save a video and add faces to the unauthorized list, but at the moment it is hard coded.
